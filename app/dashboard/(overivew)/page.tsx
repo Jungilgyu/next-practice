@@ -9,13 +9,6 @@ import { RevenueChartSkeleton, LatestInvoicesSkeleton, CardsSkeleton, } from '@/
 
  
 export default async function Page() {
-  // const revenue = await fetchRevenue();
-  // console.log('여기서 3초 걸리는거임')
-  // const latestInvoices = await fetchLatestInvoices();
-  // const {numberOfCustomers,
-  //   numberOfInvoices,
-  //   totalPaidInvoices,
-  //   totalPendingInvoices,} = await fetchCardData();
 
   return (
     <main>

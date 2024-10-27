@@ -4,17 +4,33 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
-  // NOTE: Uncomment this code in Chapter 11
+  const pathname = usePathname();
+  // console.log(pathname); // 기본값 /dashboard/invoices 찍힘 
+  const searchParams = useSearchParams();  
+  console.log(searchParams); // ReadonlyURLSearchParams 객체를 반환
+                             // ?page=1이라는 쿼리 문자열이 있으면 size는 1이 됩니다.
+// URL: http://example.com/dashboard/invoices?page=1 일 떄 
+// useSearchParams()를 호출하면 ReadonlyURLSearchParams {size: 1}을 반환하고, searchParams.get('page')는 '1'을 반환합니다.
+  
+  const currentPage = Number(searchParams.get('page')) || 1;
 
-  // const allPages = generatePagination(currentPage, totalPages);
+  const allPages = generatePagination(currentPage, totalPages); // allPages는 generatePagination함수에서 sql로 전체 값을 다가져옴 => 그래서 return에서 map으로 푸는거
+
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
+
 
   return (
     <>
       {/*  NOTE: Uncomment this code in Chapter 11 */}
 
-      {/* <div className="inline-flex">
+      <div className="inline-flex">
         <PaginationArrow
           direction="left"
           href={createPageURL(currentPage - 1)}
@@ -47,7 +63,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           href={createPageURL(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
         />
-      </div> */}
+      </div>
     </>
   );
 }
